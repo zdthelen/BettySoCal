@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">CBB_Predict</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="college_basketball">College Basketball</string>
+    <string name="college_football">College Football</string>
+    <string name="college_baseball">College Baseball</string>
+    <string name="basketball">NBA</string>
+    <string name="football">NFL</string>
+    <string name="baseball">MLB</string>
+    <string name="preferences">Preferences</string>
+    <string name="default_web_client_id">638886261484-r6n69cj4hrok02835edg8pcpe6g8lc6f.apps.googleusercontent.com</string>
+    <string name="home">Home</string>
+</resources>

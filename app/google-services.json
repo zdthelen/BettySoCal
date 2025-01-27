@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "638886261484",
+    "project_id": "betsocial-10c5c",
+    "storage_bucket": "betsocial-10c5c.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:638886261484:android:51b8da363503630c902bc9",
+        "android_client_info": {
+          "package_name": "com.zachthelen.cbb_predict"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "638886261484-r6n69cj4hrok02835edg8pcpe6g8lc6f.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBU-DX-ZGaXKYEPMaUc2P3ZlLghjNQ32TQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "638886261484-r6n69cj4hrok02835edg8pcpe6g8lc6f.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

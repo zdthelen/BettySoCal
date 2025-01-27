@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_home"
+            android:icon="@drawable/ic_home_background"
+            android:title="Home" />
+        <item
+            android:id="@+id/nav_cbb"
+            android:icon="@drawable/ic_cbasketb_background"
+            android:title="College Basketball" />
+        <item
+            android:id="@+id/nav_cfb"
+            android:icon="@drawable/ic_cfb_background"
+            android:title="College Football" />
+        <item
+            android:id="@+id/nav_cbaseball"
+            android:icon="@drawable/ic_cbaseb_background"
+            android:title="College Baseball" />
+        <item
+            android:id="@+id/nav_nba"
+            android:icon="@drawable/ic_nba_background"
+            android:title="NBA" />
+        <item
+            android:id="@+id/nav_nfl"
+            android:icon="@drawable/ic_nfl_background"
+            android:title="NFL" />
+        <item
+            android:id="@+id/nav_mlb"
+            android:icon="@drawable/ic_mlb_background"
+            android:title="MLB" />
+        <item
+            android:id="@+id/nav_preferences"
+            android:icon="@drawable/ic_preferences_background"
+            android:title="Preferences" />
+    </group>
+    <item
+        android:id="@+id/nav_exit"
+        android:title="Exit Menu" />
+</menu>
