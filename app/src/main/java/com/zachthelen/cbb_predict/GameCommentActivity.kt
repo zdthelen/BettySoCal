@@ -21,14 +21,13 @@ class GameCommentActivity : AppCompatActivity() {
     private lateinit var commentEditText: EditText
     private lateinit var sendButton: Button
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_game_comment)
 
         // Retrieve both gameId and gameDetails from Intent
         gameId = intent.getStringExtra("GAME_ID") ?: return
-        gameDetails = intent.getParcelableExtra("GAME_DETAILS") ?: return
+        gameDetails = intent.getParcelableExtra<Matchup>("GAME_DETAILS") ?: return
 
         // Use gameDetails to set up the UI with specific game information
         setupGameDetailsUI()
@@ -36,7 +35,8 @@ class GameCommentActivity : AppCompatActivity() {
         recyclerView = findViewById(R.id.commentRecyclerView)
         recyclerView.layoutManager = LinearLayoutManager(this)
 
-        adapter = CommentAdapter()
+        // Initialize adapter with an empty list and gameId
+        adapter = CommentAdapter(mutableListOf(), gameId)
         recyclerView.adapter = adapter
 
         commentEditText = findViewById(R.id.commentEditText)
@@ -54,53 +54,32 @@ class GameCommentActivity : AppCompatActivity() {
         fetchComments()
     }
 
-//    private fun setupGameDetailsUI() {
-//        // Assuming you have UI elements to display game details
-//        findViewById<TextView>(R.id.gameTitleTextView).text = "${gameDetails.home_team} vs ${gameDetails.away_team}"
-//        // Add more UI elements as needed, like projections, spreads, etc.
-//        findViewById<TextView>(R.id.homeProjectionTextView).text = "Home Points: ${"%.1f".format(gameDetails.home_score_projection)}"
-//        findViewById<TextView>(R.id.awayProjectionTextView).text = "Away Points: ${"%.1f".format(gameDetails.away_score_projection)}"
-//
-//        // Example for displaying spreads:
-//        gameDetails.spreads.forEach { spread ->
-//            val spreadText = if (spread.team == gameDetails.home_team) {
-//                "Home Spread: ${spread.spread}"
-//            } else {
-//                "Away Spread: ${spread.spread}"
-//            }
-//            // You might want to add this to a TextView, or if you have multiple, perhaps to a list or layout
-//            findViewById<TextView>(R.id.spreadInfoTextView).append("$spreadText\n")
-//        }
-//    }
-
     private fun setupGameDetailsUI() {
         // Game Title with team names and spreads
-        val homeSpread =
-            gameDetails.spreads.find { it.team == gameDetails.home_team }?.spread ?: "N/A"
-        val awaySpread =
-            gameDetails.spreads.find { it.team == gameDetails.away_team }?.spread ?: "N/A"
+        val homeSpread = gameDetails.spreads.find { it.team == gameDetails.home_team }?.spread ?: "N/A"
+        val awaySpread = gameDetails.spreads.find { it.team == gameDetails.away_team }?.spread ?: "N/A"
 
-        findViewById<TextView>(R.id.gameTitleTextView).text =
-            buildString {
-                append("${gameDetails.home_team} ($homeSpread) : ${"%.1f".format(gameDetails.home_score_projection)}\n")
-                append("vs\n")
-                append("${gameDetails.away_team} ($awaySpread) : ${"%.1f".format(gameDetails.away_score_projection)}")
-            }
+        findViewById<TextView>(R.id.gameTitleTextView).text = buildString {
+            append("${gameDetails.home_team} ($homeSpread) : ${"%.1f".format(gameDetails.home_score_projection)}\n")
+            append("vs\n")
+            append("${gameDetails.away_team} ($awaySpread) : ${"%.1f".format(gameDetails.away_score_projection)}")
+        }
     }
 
-
-        // The rest of your functions remain largely the same, but now you have gameDetails available
-
     private fun addComment(commentText: String) {
-        val comment = Comment(userId = FirebaseAuth.getInstance().currentUser?.uid ?: "",
+        val comment = Comment(
+            userId = FirebaseAuth.getInstance().currentUser?.uid ?: "",
             userName = FirebaseAuth.getInstance().currentUser?.displayName ?: "",
-            text = commentText)
+            text = commentText,
+            timestamp = System.currentTimeMillis()
+        )
         FirebaseFirestore.getInstance().collection("games")
             .document(gameId)
             .collection("comments")
             .add(comment)
             .addOnSuccessListener { documentReference ->
-                adapter.addComment(comment)
+                comment.id = documentReference.id // Now this should work since 'id' is a 'var'
+                adapter.addComment(comment) // Ensure 'addComment' is defined in CommentAdapter
             }
     }
 
@@ -114,12 +93,24 @@ class GameCommentActivity : AppCompatActivity() {
                     Log.w("GameCommentActivity", "Listen failed.", e)
                     return@addSnapshotListener
                 }
+
                 for (dc in snapshots?.documentChanges ?: emptyList()) {
                     when (dc.type) {
-                        DocumentChange.Type.ADDED -> adapter.addComment(dc.document.toObject(Comment::class.java))
-                        // Handle other changes if needed
-                        DocumentChange.Type.MODIFIED -> TODO()
-                        DocumentChange.Type.REMOVED -> TODO()
+                        DocumentChange.Type.ADDED -> {
+                            val comment = dc.document.toObject(Comment::class.java)
+                            comment.id = dc.document.id // Set the document ID to the comment's id
+                            adapter.addComment(comment)
+                        }
+                        DocumentChange.Type.MODIFIED -> {
+                            // Here you would update the comment in the adapter
+                            // This is a TODO because you didn't specify how to handle updates
+                            TODO("Handle comment modification")
+                        }
+                        DocumentChange.Type.REMOVED -> {
+                            // Here you would remove the comment from the adapter
+                            // This is a TODO because you didn't specify how to handle removals
+                            TODO("Handle comment removal")
+                        }
                     }
                 }
             }
