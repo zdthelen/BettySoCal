@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 
 class MatchupAdapter(
     private val matchups: List<Matchup>,
-    private val onItemClick: (String) -> Unit // Add this listener
+    private val onItemClick: (String, Matchup) -> Unit // Updated listener to pass Matchup object
 ) : RecyclerView.Adapter<MatchupAdapter.MatchupViewHolder>() {
 
     class MatchupViewHolder(view: View) : RecyclerView.ViewHolder(view) {
@@ -39,7 +39,7 @@ class MatchupAdapter(
         holder.itemView.setOnClickListener {
             // Assuming 'gameId' is part of your Matchup model or you can generate it
             val gameId = "${matchup.home_team}_vs_${matchup.away_team}" // Example ID
-            onItemClick(gameId)
+            onItemClick(gameId, matchup) // Pass both gameId and matchup
         }
     }
 

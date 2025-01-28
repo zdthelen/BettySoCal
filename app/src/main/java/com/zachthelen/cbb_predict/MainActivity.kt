@@ -48,9 +48,10 @@ class MainActivity : BaseActivity() {
                 // GET the processed data from /store_matchups
                 val projections = api.getProjections()
                 Log.d("MainActivity", "Stored projections size: ${projections.size}")
-                adapter = MatchupAdapter(projections) { gameId ->
+                adapter = MatchupAdapter(projections) { gameId, gameDetails ->
                     val intent = Intent(this@MainActivity, GameCommentActivity::class.java)
                     intent.putExtra("GAME_ID", gameId)
+                    intent.putExtra("GAME_DETAILS", gameDetails)
                     startActivity(intent)
                 }
                 recyclerView.adapter = adapter

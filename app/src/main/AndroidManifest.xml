@@ -67,6 +67,11 @@
             android:name=".MainActivity"
             android:exported="true" />
 
+        <activity
+            android:name=".GameCommentActivity"
+            android:exported="true" />
+
+
     </application>
 
 </manifest>
